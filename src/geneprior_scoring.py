@@ -129,12 +129,28 @@ print("\nCalculating GenePrior v1 score...")
 GWAS_WEIGHT = 0.70
 FUNCTIONAL_WEIGHT = 0.30
 
-evidence["geneprior_score"] = (
+# --------------------------------------------------
+# Calculate evidence contributions
+# --------------------------------------------------
+
+evidence["gwas_contribution"] = (
     GWAS_WEIGHT * evidence["gwas_score"]
-    + FUNCTIONAL_WEIGHT * evidence["functional_score"]
 )
 
-# Convert score to 0–100 scale
+evidence["functional_contribution"] = (
+    FUNCTIONAL_WEIGHT * evidence["functional_score"]
+)
+
+
+# --------------------------------------------------
+# Calculate final GenePrior score
+# --------------------------------------------------
+
+evidence["geneprior_score"] = (
+    evidence["gwas_contribution"]
+    + evidence["functional_contribution"]
+)
+
 evidence["geneprior_score_100"] = (
     evidence["geneprior_score"] * 100
 )
@@ -165,18 +181,24 @@ column_order = [
     "geneprior_rank",
     "geneprior_score",
     "geneprior_score_100",
+
     "gwas_score",
+    "gwas_contribution",
+
     "functional_score",
+    "functional_contribution",
+
     "best_p_value",
     "variant_count",
     "significant_variant_count",
+
     "most_severe_functional_consequence",
+
     "HIGH",
     "MODERATE",
     "LOW",
     "MODIFIER"
 ]
-
 evidence = evidence[column_order]
 
 
