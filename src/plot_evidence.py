@@ -32,29 +32,50 @@ plt.scatter(
     alpha=0.7
 )
 
-plt.xlabel("GWAS Score")
-plt.ylabel("Functional Score")
-plt.title("GWAS Evidence vs Functional Evidence")
+
+# --------------------------------------------------
+# 4. Important genes to label
+# --------------------------------------------------
+
+genes_to_label = [
+    "BIN1",
+    "TREM2",
+    "IL34",
+    "ARHGAP45",
+    "APH1B",
+    "PLCG2",
+    "MME"
+]
 
 
 # --------------------------------------------------
-# 4. Label top 10 GenePrior genes
+# 5. Add labels
 # --------------------------------------------------
 
-top10 = df.head(10)
-
-for _, row in top10.iterrows():
+for _, row in df[df["gene"].isin(genes_to_label)].iterrows():
 
     plt.annotate(
         row["gene"],
         (row["gwas_score"], row["functional_score"]),
-        xytext=(5, 5),
+        xytext=(6, 6),
         textcoords="offset points"
     )
 
 
 # --------------------------------------------------
-# 5. Save figure
+# 6. Labels and title
+# --------------------------------------------------
+
+plt.xlabel("GWAS Score")
+plt.ylabel("Functional Score")
+
+plt.title(
+    "GWAS Evidence vs Functional Evidence"
+)
+
+
+# --------------------------------------------------
+# 7. Save figure
 # --------------------------------------------------
 
 plt.tight_layout()
